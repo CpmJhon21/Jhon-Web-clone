@@ -1,0 +1,102 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Segoe UI",
+      "count": 14
+    },
+    {
+      "family": "system-ui",
+      "count": 14
+    },
+    {
+      "family": "-apple-system",
+      "count": 14
+    },
+    {
+      "family": "sans-serif",
+      "count": 14
+    }
+  ],
+  "colors": {
+    "primary": "#1E293B",
+    "accent": "#2563EB",
+    "background": "#FFFFFF",
+    "textPrimary": "#2563EB",
+    "link": "#2563EB"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Segoe UI",
+      "heading": "Segoe UI"
+    },
+    "fontStacks": {
+      "body": [
+        "Segoe UI",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ],
+      "heading": [
+        "Segoe UI",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Segoe UI",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "16px",
+      "h2": "16px",
+      "body": "12px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "8px"
+  },
+  "components": {
+    "input": {
+      "background": "#F8FAFC",
+      "textColor": "#1E293B",
+      "borderColor": "#E2E8F0",
+      "borderRadius": "8px",
+      "borderRadiusCorners": {
+        "topLeft": "8px",
+        "topRight": "8px",
+        "bottomRight": "8px",
+        "bottomLeft": "8px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": null,
+    "favicon": null,
+    "ogImage": null
+  },
+  "__framework_hints": [],
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "secondary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "confidence": 0
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  }
+}
