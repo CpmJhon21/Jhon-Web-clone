@@ -1,39 +1,77 @@
+import { pool } from "./db";
 
-import { db } from "./db";
-import {
-  images,
-  type Image,
-  type InsertImage,
-} from "@shared/schema";
-import { eq, desc, lt } from "drizzle-orm";
-
-export interface IStorage {
-  getImages(): Promise<Image[]>;
-  getImage(id: number): Promise<Image | undefined>;
-  createImage(image: InsertImage): Promise<Image>;
-  cleanupOldImages(minutes: number): Promise<number>;
+export interface ImageData {
+  id?: number;
+  original_image_url: string;
+  generated_image_url: string;
+  top_text?: string;
+  bottom_text?: string;
+  created_at?: Date;
 }
 
-export class DatabaseStorage implements IStorage {
-  async getImages(): Promise<Image[]> {
-    return await db.select().from(images).orderBy(desc(images.createdAt));
-  }
+/**
+ * CREATE image (dipakai di POST)
+ */
+async function createImage(data: ImageData) {
+  const result = await pool.query(
+    `
+    INSERT INTO images
+    (original_image_url, generated_image_url, top_text, bottom_text)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *
+    `,
+    [
+      data.original_image_url,
+      data.generated_image_url,
+      data.top_text ?? null,
+      data.bottom_text ?? null,
+    ]
+  );
 
-  async getImage(id: number): Promise<Image | undefined> {
-    const [image] = await db.select().from(images).where(eq(images.id, id));
-    return image;
-  }
-
-  async createImage(insertImage: InsertImage): Promise<Image> {
-    const [image] = await db.insert(images).values(insertImage).returning();
-    return image;
-  }
-
-  async cleanupOldImages(minutes: number): Promise<number> {
-    const threshold = new Date(Date.now() - minutes * 60000);
-    const result = await db.delete(images).where(lt(images.createdAt, threshold)).returning();
-    return result.length;
-  }
+  return result.rows[0];
 }
 
-export const storage = new DatabaseStorage();
+/**
+ * GET all images
+ */
+async function getImages() {
+  const result = await pool.query(
+    `SELECT * FROM images ORDER BY created_at DESC`
+  );
+  return result.rows;
+}
+
+/**
+ * GET image by ID
+ */
+async function getImage(id: number) {
+  const result = await pool.query(
+    `SELECT * FROM images WHERE id = $1`,
+    [id]
+  );
+  return result.rows[0];
+}
+
+/**
+ * DELETE images older than X minutes
+ */
+async function cleanupOldImages(minutes: number) {
+  const result = await pool.query(
+    `
+    DELETE FROM images
+    WHERE created_at < now() - interval '${minutes} minutes'
+    `
+  );
+
+  return result.rowCount ?? 0;
+}
+
+/**
+ * EXPORT STORAGE (SESUI ROUTER)
+ */
+export const storage = {
+  createImage,
+  getImages,
+  getImage,
+  cleanupOldImages,
+};
