@@ -12,7 +12,7 @@ const app = express();
 ========================= */
 app.use(
   express.static(
-    path.join(__dirname, "../client")
+    path.join(__dirname, "../client/src/pages/Home.tsx")
   )
 );
 
